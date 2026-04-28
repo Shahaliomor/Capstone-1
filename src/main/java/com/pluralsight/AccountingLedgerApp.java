@@ -6,6 +6,7 @@ public class AccountingLedgerApp {
     static Scanner input= new Scanner(System.in);
 
     public static void main(String[] args) {
+        System.out.println("Welcome to the Accounting Ledger App!");
         homeScreen();
     }
 
@@ -13,11 +14,15 @@ public class AccountingLedgerApp {
 
         while (true){
             System.out.println("""
-                    D) Add Deposit
-                    P) Make Payment
-                    L) Ledger
-                    X) Exit
-                    """);
+                ====================================
+                        ACCOUNTING LEDGER APP
+                ====================================
+                D) Add Deposit
+                P) Make Payment
+                L) Ledger
+                X) Exit
+                ====================================
+                """);
             System.out.print("choose: ");
             String choose=input.nextLine().trim();
             if(choose.equalsIgnoreCase("d")){
@@ -32,7 +37,7 @@ public class AccountingLedgerApp {
             }
             else {
                 System.out.println();
-                System.out.println("Invalid input. Please choose from the options below:");
+                System.out.println("❌ Invalid choice. Please enter D, P, L, or X.");
 
             }
 
@@ -133,6 +138,13 @@ public class AccountingLedgerApp {
         return value;
     }
     private static void addDeposit(){
+
+        System.out.println("""
+        ------------------------------------
+                   ADD DEPOSIT
+        ------------------------------------
+        """);
+
         String date = getDate();
         String time = getTime();
         String description = getInput("Description: ");
@@ -142,6 +154,7 @@ public class AccountingLedgerApp {
         double amount;
 
         while (true) {
+            System.out.println();
             System.out.print("Amount: $");
 
             if (input.hasNextDouble()) {
@@ -151,11 +164,11 @@ public class AccountingLedgerApp {
                 if (amount > 0) {
                     break; // valid deposit
                 } else {
-                    System.out.println("Negative amount cannot be a deposit. Please enter a positive amount.");
+                    System.out.println("❌ Negative amount cannot be a deposit. Enter a positive value.");
                 }
 
             } else {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("❌ Invalid input. Please enter a number.");
                 input.nextLine(); // clear bad input
             }
         }
@@ -163,48 +176,74 @@ public class AccountingLedgerApp {
         Transaction trans= new Transaction(date,time,description,vendor,amount);
         TransactionFileManager.writefile(trans.toCSV());
 
-        System.out.println("Deposit added successfully!");
-        System.out.println(" ");
+        System.out.println("✅ Deposit saved successfully!");
+        System.out.println();
 
     }
     private static void makePayment(){
+
+        System.out.println("""
+    ------------------------------------
+                MAKE PAYMENT
+    ------------------------------------
+    """);
+
         String date = getDate();
         String time = getTime();
         String description = getInput("Description: ");
         String vendor = getInput("Vendor: ");
 
-
         double amount;
 
         while (true) {
+            System.out.println();
             System.out.print("Amount: $");
 
             if (input.hasNextDouble()) {
                 amount = input.nextDouble();
                 input.nextLine();
 
-                if (amount < 0) {
-                    break; // valid deposit
-                } else {
-                    amount = -Math.abs(amount);
-                    break;
+                if (amount == 0) {
+                    System.out.println("❌ Amount cannot be zero.");
+                    continue;
                 }
 
+                amount = -Math.abs(amount); // 🔥 always negative
+                break;
+
             } else {
-                System.out.println("Invalid input. Please enter a number.");
-                input.nextLine(); // clear bad input
+                System.out.println("❌ Invalid input. Please enter a number.");
+                input.nextLine();
             }
         }
 
-        Transaction trans= new Transaction(date,time,description,vendor,amount);
+        Transaction trans = new Transaction(date, time, description, vendor, amount);
         TransactionFileManager.writefile(trans.toCSV());
 
-        System.out.println("Payment added successfully!");
-        System.out.println(" ");
+        // 👇 ADD THIS (presentation boost)
+        System.out.println("\nSaved Transaction:");
+        System.out.println(trans.toCSV());
 
-
+        System.out.println("✅ Payment saved successfully!\n");
     }
+
     private static void ledger(){
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println("""
+                
+                ====================================
+                           LEDGER 
+                ====================================
+                A) All - Display all entries
+                D) Deposits - Display only the entries that are deposits into the account
+                P) Payments - Display only the negative entries (or payments)
+                R) Reports
+                H) Home - go back to the home page
+                ====================================
+                """);
 
     }
 
