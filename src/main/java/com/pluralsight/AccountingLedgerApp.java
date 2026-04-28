@@ -40,28 +40,90 @@ public class AccountingLedgerApp {
 
     }
     private static String getDate() {
-        System.out.print("Year (YYYY): ");
-        String year = input.nextLine();
+        int year;
+        int month;
+        int day;
 
-        System.out.print("Month (MM): ");
-        String month = input.nextLine();
+        while (true) {
 
-        System.out.print("Day (DD): ");
-        String day = input.nextLine();
+            System.out.print("Year (YYYY): ");
+            if (input.hasNextInt()) {
+                year = input.nextInt();
+                if (year < 1900 || year > 2100) {
+                    System.out.println("Invalid year. Try again.");
+                    continue;
+                }
+            } else {
+                System.out.println("Invalid input.");
+                input.nextLine();
+                continue;
+            }
 
-        return year + "-" + month + "-" + day;
+            System.out.print("Month (1-12): ");
+            if (input.hasNextInt()) {
+                month = input.nextInt();
+                if (month < 1 || month > 12) {
+                    System.out.println("Invalid month. Try again.");
+                    continue;
+                }
+            } else {
+                System.out.println("Invalid input.");
+                input.nextLine();
+                continue;
+            }
+
+            System.out.print("Day (1-31): ");
+            if (input.hasNextInt()) {
+                day = input.nextInt();
+                if (day < 1 || day > 31) {
+                    System.out.println("Invalid day. Try again.");
+                    continue;
+                }
+            } else {
+                System.out.println("Invalid input.");
+                input.nextLine();
+                continue;
+            }
+
+            input.nextLine(); // clear buffer
+            break;
+        }
+
+        return String.format("%04d-%02d-%02d", year, month, day);
     }
     private static String getTime() {
-        System.out.print("Hour (HH): ");
-        String hour = input.nextLine();
+        int hour;
+        int minute;
+        int second;
 
-        System.out.print("Minute (MM): ");
-        String minute = input.nextLine();
+        while (true) {
 
-        System.out.print("Second (SS): ");
-        String second = input.nextLine();
+            System.out.print("Hour (0-23): ");
+            hour = input.nextInt();
+            if (hour < 0 || hour > 23) {
+                System.out.println("Invalid hour. Try again.");
+                continue;
+            }
 
-        return hour + ":" + minute + ":" + second;
+            System.out.print("Minute (0-59): ");
+            minute = input.nextInt();
+            if (minute < 0 || minute > 59) {
+                System.out.println("Invalid minute. Try again.");
+                continue;
+            }
+
+            System.out.print("Second (0-59): ");
+            second = input.nextInt();
+            if (second < 0 || second > 59) {
+                System.out.println("Invalid second. Try again.");
+                continue;
+            }
+
+            input.nextLine(); // clear buffer
+            break; // ✅ valid input → exit loop
+        }
+
+        return String.format("%02d:%02d:%02d", hour, minute, second);
     }
 
     private static String getInput(String message) {
