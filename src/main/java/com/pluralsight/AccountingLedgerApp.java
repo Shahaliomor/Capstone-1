@@ -39,6 +39,31 @@ public class AccountingLedgerApp {
         }
 
     }
+    private static String getDate() {
+        System.out.print("Year (YYYY): ");
+        String year = input.nextLine();
+
+        System.out.print("Month (MM): ");
+        String month = input.nextLine();
+
+        System.out.print("Day (DD): ");
+        String day = input.nextLine();
+
+        return year + "-" + month + "-" + day;
+    }
+    private static String getTime() {
+        System.out.print("Hour (HH): ");
+        String hour = input.nextLine();
+
+        System.out.print("Minute (MM): ");
+        String minute = input.nextLine();
+
+        System.out.print("Second (SS): ");
+        String second = input.nextLine();
+
+        return hour + ":" + minute + ":" + second;
+    }
+
     private static String getInput(String message) {
         System.out.print(message);
         String value = input.nextLine().trim();
@@ -46,8 +71,11 @@ public class AccountingLedgerApp {
         return value;
     }
     private static void addDeposit(){
+        String date = getDate();
+        String time = getTime();
         String description = getInput("Description: ");
         String vendor = getInput("Vendor: ");
+
 
         double amount;
 
@@ -70,7 +98,7 @@ public class AccountingLedgerApp {
             }
         }
 
-        Transaction trans= new Transaction(description,vendor,amount);
+        Transaction trans= new Transaction(date,time,description,vendor,amount);
         TransactionFileManager.writefile(trans.toCSV());
 
         System.out.println("Deposit added successfully!");
@@ -78,9 +106,11 @@ public class AccountingLedgerApp {
 
     }
     private static void makePayment(){
-
+        String date = getDate();
+        String time = getTime();
         String description = getInput("Description: ");
         String vendor = getInput("Vendor: ");
+
 
         double amount;
 
@@ -104,11 +134,11 @@ public class AccountingLedgerApp {
             }
         }
 
-        Transaction trans= new Transaction(description,vendor,amount);
+        Transaction trans= new Transaction(date,time,description,vendor,amount);
         TransactionFileManager.writefile(trans.toCSV());
 
         System.out.println("Payment added successfully!");
-        System.out.println();
+        System.out.println(" ");
 
 
     }
