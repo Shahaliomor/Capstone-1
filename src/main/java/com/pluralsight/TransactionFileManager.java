@@ -31,14 +31,5 @@ public class TransactionFileManager {
         }catch (IOException e){
             System.out.print("Error: IO Exception");
         }
-
     }
-
-
-
-
-
-
-
-
 }

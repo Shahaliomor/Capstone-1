@@ -15,7 +15,7 @@ public class AccountingLedgerApp {
         while (true){
             System.out.println("""
                 ====================================
-                        ACCOUNTING LEDGER APP
+                   ACCOUNTING LEDGER APP Home Page
                 ====================================
                 D) Add Deposit
                 P) Make Payment
@@ -227,26 +227,62 @@ public class AccountingLedgerApp {
         System.out.println("✅ Payment saved successfully!\n");
     }
 
-    private static void ledger(){
+    private static void ledger() {
 
         System.out.println();
         System.out.println();
 
-        System.out.println("""
+        while (true) {
+
+            System.out.println("""
                 
                 ====================================
-                           LEDGER 
+                             LEDGER 
                 ====================================
                 A) All - Display all entries
                 D) Deposits - Display only the entries that are deposits into the account
-                P) Payments - Display only the negative entries (or payments)
+                P) Payments - Display payment
                 R) Reports
                 H) Home - go back to the home page
                 ====================================
                 """);
 
+            System.out.print("choose: ");
+            String choose=input.nextLine().trim();
+            if(choose.equalsIgnoreCase("a")){
+                displayAll();
+            } else if (choose.equalsIgnoreCase("d")) {
+                displayDeposits();
+            }else if (choose.equalsIgnoreCase("p")) {
+                displayPayments();
+            }else if (choose.equalsIgnoreCase("r")) {
+                reports();
+            }
+            else if (choose.equalsIgnoreCase("h")) {
+                System.out.println("Going back to main screen");
+                System.out.println();
+                System.out.println();
+                return;
+            }
+            else {
+                System.out.println();
+                System.out.println("❌ Invalid choice. Please enter A, D, P, R or H.");
+            }
+        }
     }
 
+    private static void displayAll(){
+
+    }
+    private static void displayDeposits(){
+
+    }
+    private static void displayPayments(){
+
+    }
+    private static void reports(){
+
+    }
 }
 
 
