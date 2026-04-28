@@ -108,7 +108,7 @@ public class AccountingLedgerApp {
         TransactionFileManager.writefile(trans.toCSV());
 
         System.out.println("Payment added successfully!");
-        System.out.println("");
+        System.out.println();
 
 
     }
