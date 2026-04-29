@@ -337,7 +337,7 @@ public class AccountingLedgerApp {
             System.out.println("No deposits found.");
         }
 
-        System.out.println("----------------------------------------------------");
+        System.out.println("---------------------------------------------------");
         System.out.printf("🥷 Total Deposits as of %s : $%.2f%n", currentDateAndTime(), total);
         System.out.println("====================================================");
 
