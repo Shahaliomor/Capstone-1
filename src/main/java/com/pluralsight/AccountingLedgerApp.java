@@ -275,6 +275,7 @@ public class AccountingLedgerApp {
 
     private static void displayAll(){
 
+
     }
     private static void displayDeposits(){
 
@@ -285,6 +286,8 @@ public class AccountingLedgerApp {
     private static void reports(){
 
         while (true){
+            System.out.println();
+            System.out.println();
             System.out.println("""
                 
                 ====================================
