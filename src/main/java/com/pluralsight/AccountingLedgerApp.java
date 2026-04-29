@@ -347,6 +347,38 @@ public class AccountingLedgerApp {
         System.out.println();
     }
     private static void displayPayments(){
+        System.out.println("""
+            
+            ====================================================
+                        🥷 Payment (Payments Only)
+            ====================================================
+            """);
+
+        TransactionFileManager.readFile();
+
+        boolean found = false;
+        double total = 0;
+
+        for (Transaction t : TransactionFileManager.transactions){
+            if (t.getAmount() < 0){
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        } // ✅ loop ends here
+
+        if (!found){
+            System.out.println("No Payment found.");
+        }
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+
+        System.out.println("Press Enter to continue...");
+        input.nextLine();
+        System.out.println();
+        System.out.println();
 
     }
     private static void reports(){
