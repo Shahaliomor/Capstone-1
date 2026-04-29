@@ -14,16 +14,18 @@ public class AccountingLedgerApp {
 
         while (true){
             System.out.println("""
-                ====================================
-                   ACCOUNTING LEDGER APP Home Page
-                ====================================
-                D) Add Deposit
-                P) Make Payment
-                L) Ledger
-                X) Exit
-                ====================================
-                """);
-            System.out.print("choose: ");
+            ====================================
+                    EXPENSE NINJA 🥷
+            ====================================
+            Track. Control. Master your money.
+            ------------------------------------
+            D) Add Deposit
+            P) Make Payment
+            L) Ledger
+            X) Exit
+            ====================================
+            """);
+            System.out.print("Choose an option: ");
             String choose=input.nextLine().trim();
             if(choose.equalsIgnoreCase("d")){
                 addDeposit();
