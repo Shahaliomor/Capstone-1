@@ -313,6 +313,9 @@ public class AccountingLedgerApp {
                 searchByVendor();
             } else if(choice.equals("0")){
                 return; // goes back to Ledger screen
+            } else if (choice.equals("6")) {
+                customSearch();
+
             } else {
                 System.out.println("Invalid option.");
             }
@@ -335,6 +338,9 @@ public class AccountingLedgerApp {
 
     }
     private static void searchByVendor(){
+
+    }
+    private static void customSearch(){
 
     }
 
