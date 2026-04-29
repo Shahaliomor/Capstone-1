@@ -282,7 +282,61 @@ public class AccountingLedgerApp {
     }
     private static void reports(){
 
+        while (true){
+            System.out.println("""
+                
+                ====================================
+                            REPORTS
+                ====================================
+                1) Month To Date
+                2) Previous Month
+                3) Year To Date
+                4) Previous Year
+                5) Search by Vendor
+                0) Back
+                ====================================
+                """);
+
+            System.out.print("Choose: ");
+            String choice = input.nextLine().trim();
+
+            if(choice.equals("1")){
+                monthToDate();
+            } else if(choice.equals("2")){
+                previousMonth();
+            } else if(choice.equals("3")){
+                yearToDate();
+            } else if(choice.equals("4")){
+                previousYear();
+            } else if(choice.equals("5")){
+                searchByVendor();
+            } else if(choice.equals("0")){
+                return; // goes back to Ledger screen
+            } else {
+                System.out.println("Invalid option.");
+            }
+        }
+
+
+
     }
+
+    private static void monthToDate() {
+
+    }
+    private static void previousMonth(){
+
+    }
+    private static void yearToDate(){
+
+    }
+    private static void previousYear(){
+
+    }
+    private static void searchByVendor(){
+
+    }
+
 }
 
 
