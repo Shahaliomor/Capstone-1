@@ -154,7 +154,7 @@ public class AccountingLedgerApp {
 
         System.out.println("""
         ------------------------------------
-                   ADD DEPOSIT
+                  🥷 ADD DEPOSIT
         ------------------------------------
         """);
 
@@ -199,7 +199,7 @@ public class AccountingLedgerApp {
 
         System.out.println("""
     ------------------------------------
-                MAKE PAYMENT
+               🥷 MAKE PAYMENT
     ------------------------------------
     """);
 
@@ -254,7 +254,7 @@ public class AccountingLedgerApp {
             System.out.println("""
                 
                 ====================================
-                             LEDGER 
+                            🥷 LEDGER 
                 ====================================
                 A) All - Display all entries
                 D) Deposits - Display only the entries that are deposits into the account
@@ -293,7 +293,7 @@ public class AccountingLedgerApp {
         System.out.println("""
                 
                 ====================================================
-                Display all entries in reverse chronological order
+                🥷 Display all entries in reverse chronological order
                 ====================================================
                 """);
         TransactionFileManager.readFile();
@@ -305,7 +305,7 @@ public class AccountingLedgerApp {
         System.out.println();
         System.out.println();
         System.out.println("====================================================");
-        System.out.println("Press Enter to continue...");
+        System.out.println("🥷 Press Enter to continue...");
         input.nextLine(); // wait
         System.out.println();
         System.out.println();
@@ -313,7 +313,38 @@ public class AccountingLedgerApp {
 
     }
     private static void displayDeposits(){
+        System.out.println("""
+            
+            ====================================================
+                        🥷 DEPOSITS (Income Only)
+            ====================================================
+            """);
 
+        TransactionFileManager.readFile();
+
+        boolean found = false;
+        double total = 0;
+
+        for (Transaction t : TransactionFileManager.transactions){
+            if (t.getAmount() > 0){
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        } // ✅ loop ends here
+
+        if (!found){
+            System.out.println("No deposits found.");
+        }
+
+        System.out.println("----------------------------------------------------");
+        System.out.printf("🥷 Total Deposits as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+
+        System.out.println("Press Enter to continue...");
+        input.nextLine();
+        System.out.println();
+        System.out.println();
     }
     private static void displayPayments(){
 
