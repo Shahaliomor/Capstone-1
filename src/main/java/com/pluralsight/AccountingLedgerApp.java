@@ -179,6 +179,8 @@ public class AccountingLedgerApp {
         TransactionFileManager.writefile(trans.toCSV());
 
         System.out.println("✅ Deposit saved successfully!");
+        System.out.println("Press Enter to continue...");
+        input.nextLine(); // wait
         System.out.println();
 
     }
@@ -227,6 +229,8 @@ public class AccountingLedgerApp {
         System.out.println(trans.toCSV());
 
         System.out.println("✅ Payment saved successfully!\n");
+        System.out.println("Press Enter to continue...");
+        input.nextLine(); // wait
     }
 
     private static void ledger() {
@@ -274,6 +278,23 @@ public class AccountingLedgerApp {
     }
 
     private static void displayAll(){
+
+        System.out.println("""
+                
+                ====================================================
+                Display all entries in reverse chronological order
+                ====================================================
+                """);
+        TransactionFileManager.readFile();
+        TransactionFileManager.displayAllSorted();
+
+
+
+        System.out.println("====================================================");
+        System.out.println("Press Enter to continue...");
+        input.nextLine(); // wait
+        System.out.println();
+        System.out.println();
 
 
     }
@@ -325,9 +346,6 @@ public class AccountingLedgerApp {
                 System.out.println("Invalid option.");
             }
         }
-
-
-
     }
 
     private static void monthToDate() {

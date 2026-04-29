@@ -4,16 +4,26 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class TransactionFileManager {
-    static  ArrayList<String> arrlines =new ArrayList<>();
+    static ArrayList<Transaction> transactions = new ArrayList<>();
 
     private static final String FILE_PATH="src/main/resources/transactions.csv";
 
-    public static void readfile(){
+
+    public static void readFile(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
+            transactions.clear();
             String line;
             while ((line=reader.readLine())!=null) {
-                arrlines.add(line);
+                String[] parts=line.split("\\|");
+                String date=parts[0];
+                String time=parts[1];
+                String description=parts[2];
+                String vandor=parts[3];
+                double amount=Double.parseDouble(parts[4]);
+
+                Transaction trans=new Transaction(date,time,description,vandor,amount);
+                transactions.add(trans);
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -21,6 +31,26 @@ public class TransactionFileManager {
         } catch (IOException e){
             System.out.print("Error: IO Exception");
         }
+
+    }
+
+    public static void displayAllSorted(){
+
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        // Sort by date + time (newest first)
+        transactions.sort((t1, t2) -> {
+            String dt1 = t1.getDate() + " " + t1.getTime();
+            String dt2 = t2.getDate() + " " + t2.getTime();
+            return dt2.compareTo(dt1);
+        });
+        for (Transaction t : transactions) {
+            System.out.println(t.toCSV());
+        }
+
 
     }
 
