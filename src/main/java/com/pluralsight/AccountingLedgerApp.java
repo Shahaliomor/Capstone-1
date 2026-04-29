@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
@@ -131,6 +133,15 @@ public class AccountingLedgerApp {
         }
 
         return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
+
+    private static String currentDateAndTime(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss");
+
+        String dateTime = LocalDateTime.now().format(formatter);
+
+        return dateTime;
+
     }
 
     private static String getInput(String message) {
@@ -287,9 +298,12 @@ public class AccountingLedgerApp {
                 """);
         TransactionFileManager.readFile();
         TransactionFileManager.displayAllSorted();
+        System.out.println("----------------------------------------------------");
+        System.out.printf("🥷 Remaining Balance as of %s : $%.2f%n", currentDateAndTime(), TransactionFileManager.total);
 
 
-
+        System.out.println();
+        System.out.println();
         System.out.println("====================================================");
         System.out.println("Press Enter to continue...");
         input.nextLine(); // wait

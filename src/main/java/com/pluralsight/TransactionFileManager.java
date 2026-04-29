@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class TransactionFileManager {
     static ArrayList<Transaction> transactions = new ArrayList<>();
+    static double total=0;
 
     private static final String FILE_PATH="src/main/resources/transactions.csv";
 
@@ -22,7 +23,9 @@ public class TransactionFileManager {
                 String vandor=parts[3];
                 double amount=Double.parseDouble(parts[4]);
 
+
                 Transaction trans=new Transaction(date,time,description,vandor,amount);
+                total+=amount;
                 transactions.add(trans);
             }
             reader.close();
@@ -47,8 +50,10 @@ public class TransactionFileManager {
             String dt2 = t2.getDate() + " " + t2.getTime();
             return dt2.compareTo(dt1);
         });
+        double total=0;
         for (Transaction t : transactions) {
             System.out.println(t.toCSV());
+
         }
 
 
