@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -432,6 +433,36 @@ public class AccountingLedgerApp {
 
     }
     private static void previousYear(){
+        boolean found=false;
+        double total=0;
+        System.out.println("""
+            
+            ====================================================
+                        🥷 Previous Year
+            ====================================================
+            """);
+
+        int year= LocalDate.now().getYear();
+        int previousYear=year-1;
+
+        TransactionFileManager.readFile();
+        for (Transaction t:TransactionFileManager.transactions) {
+            int transactionYear=Integer.parseInt(t.getDate().substring(0,4));
+
+            if (transactionYear==previousYear) {
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        }
+        if(!found){
+            System.out.println("No Vabdor found.");
+        }
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+        pause();
 
     }
     private static void searchByVendor(){
@@ -459,9 +490,6 @@ public class AccountingLedgerApp {
             if(!found){
                 System.out.println("No Vabdor found.");
             }
-
-
-
 
         System.out.println("---------------------------------------------------");
         System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
