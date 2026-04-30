@@ -499,6 +499,42 @@ public class AccountingLedgerApp {
 
     }
     private static void yearToDate(){
+        boolean found = false;
+        double total = 0;
+
+        System.out.println("""
+        
+        ====================================================
+                    🥷 YEAR TO DATE
+        ====================================================
+        """);
+
+        int currentYear = LocalDate.now().getYear();
+
+        TransactionFileManager.readFile();
+
+        for (Transaction t : TransactionFileManager.transactions) {
+
+            String[] parts = t.getDate().split("-");
+
+            int year = Integer.parseInt(parts[0]);
+
+            if (year == currentYear) {
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found for this year.");
+        }
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Year To Date Total as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+
+        pause();
 
     }
     private static void previousYear(){
