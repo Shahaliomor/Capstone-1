@@ -6,6 +6,7 @@ public class Transaction {
    private String description;
    private String vendor;
    private double amount;
+   private double total;
 
     Transaction(String date, String time, String description, String vendor, double amount)
     {
@@ -16,6 +17,8 @@ public class Transaction {
         this.date= date;
 
     }
+
+
 
     public String getDate() {
         return date;
@@ -29,9 +32,15 @@ public class Transaction {
         return description;
     }
 
+    public String getVendor() {
+        return vendor;
+    }
+
     public double getAmount() {
         return amount;
     }
+
+
 
     public String toCSV() {
         return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;

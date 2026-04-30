@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class TransactionFileManager {
+    public static double total = 0;
     static ArrayList<Transaction> transactions = new ArrayList<>();
-    static double total=0;
 
     private static final String FILE_PATH="src/main/resources/transactions.csv";
 
@@ -25,7 +25,7 @@ public class TransactionFileManager {
 
 
                 Transaction trans=new Transaction(date,time,description,vandor,amount);
-                total+=amount;
+
                 transactions.add(trans);
             }
             reader.close();
@@ -50,13 +50,18 @@ public class TransactionFileManager {
             String dt2 = t2.getDate() + " " + t2.getTime();
             return dt2.compareTo(dt1);
         });
-        double total=0;
+        total=0;
         for (Transaction t : transactions) {
             System.out.println(t.toCSV());
-
+            total+=t.getAmount();
         }
 
 
+
+
+    }
+    public static double getTotal() {
+        return total;
     }
 
     public static void writefile(String transactionLine){

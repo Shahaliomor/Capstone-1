@@ -12,6 +12,12 @@ public class AccountingLedgerApp {
         homeScreen();
     }
 
+    private static void pause(){
+        System.out.println("\n🥷 Press Enter to continue...");
+        input.nextLine(); // clear leftover
+
+    }
+
     private static void homeScreen(){
 
         while (true){
@@ -36,7 +42,11 @@ public class AccountingLedgerApp {
             }else if (choose.equalsIgnoreCase("l")) {
                 ledger();
             }else if (choose.equalsIgnoreCase("x")) {
-                System.out.println("Thank you for using the Accounting Ledger App. Your transactions have been recorded successfully. Have a great day!");
+                System.out.println("""
+                Thank you for using the EXPENSE NINJA App 🥷. 
+                Your transactions have been recorded successfully 🥷. 
+                Have a great day 🥷!
+                """);
                 return;
             }
             else {
@@ -48,6 +58,7 @@ public class AccountingLedgerApp {
         }
 
     }
+
     private static String getDate() {
         int year;
         int month;
@@ -190,9 +201,7 @@ public class AccountingLedgerApp {
         TransactionFileManager.writefile(trans.toCSV());
 
         System.out.println("✅ Deposit saved successfully!");
-        System.out.println("Press Enter to continue...");
-        input.nextLine(); // wait
-        System.out.println();
+        pause();
 
     }
     private static void makePayment(){
@@ -240,8 +249,7 @@ public class AccountingLedgerApp {
         System.out.println(trans.toCSV());
 
         System.out.println("✅ Payment saved successfully!\n");
-        System.out.println("Press Enter to continue...");
-        input.nextLine(); // wait
+        pause();
     }
 
     private static void ledger() {
@@ -290,6 +298,7 @@ public class AccountingLedgerApp {
 
     private static void displayAll(){
 
+
         System.out.println("""
                 
                 ====================================================
@@ -299,17 +308,11 @@ public class AccountingLedgerApp {
         TransactionFileManager.readFile();
         TransactionFileManager.displayAllSorted();
         System.out.println("----------------------------------------------------");
-        System.out.printf("🥷 Remaining Balance as of %s : $%.2f%n", currentDateAndTime(), TransactionFileManager.total);
+        System.out.printf("🥷 Remaining Balance as of %s : $%.2f%n", currentDateAndTime(), TransactionFileManager.getTotal());
 
-
-        System.out.println();
         System.out.println();
         System.out.println("====================================================");
-        System.out.println("🥷 Press Enter to continue...");
-        input.nextLine(); // wait
-        System.out.println();
-        System.out.println();
-
+        pause();
 
     }
     private static void displayDeposits(){
@@ -331,7 +334,7 @@ public class AccountingLedgerApp {
                 total += t.getAmount();
                 found = true;
             }
-        } // ✅ loop ends here
+        } //  loop ends here
 
         if (!found){
             System.out.println("No deposits found.");
@@ -341,10 +344,7 @@ public class AccountingLedgerApp {
         System.out.printf("🥷 Total Deposits as of %s : $%.2f%n", currentDateAndTime(), total);
         System.out.println("====================================================");
 
-        System.out.println("Press Enter to continue...");
-        input.nextLine();
-        System.out.println();
-        System.out.println();
+        pause();
     }
     private static void displayPayments(){
         System.out.println("""
@@ -375,10 +375,7 @@ public class AccountingLedgerApp {
         System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
         System.out.println("====================================================");
 
-        System.out.println("Press Enter to continue...");
-        input.nextLine();
-        System.out.println();
-        System.out.println();
+        pause();
 
     }
     private static void reports(){
@@ -389,7 +386,7 @@ public class AccountingLedgerApp {
             System.out.println("""
                 
                 ====================================
-                            REPORTS
+                          🥷 REPORTS
                 ====================================
                 1) Month To Date
                 2) Previous Month
@@ -438,6 +435,38 @@ public class AccountingLedgerApp {
 
     }
     private static void searchByVendor(){
+
+        boolean found=false;
+        double total=0;
+        System.out.println("""
+            
+            ====================================================
+                        🥷 Search By Vendor
+            ====================================================
+            """);
+
+
+        TransactionFileManager.readFile();
+        System.out.print("which vandor are you searching: ");
+        String vandorName=input.nextLine();
+        for (Transaction t:TransactionFileManager.transactions) {
+            if (t.getVendor().equalsIgnoreCase(vandorName)) {
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        }
+            if(!found){
+                System.out.println("No Vabdor found.");
+            }
+
+
+
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+        pause();
 
     }
     private static void customSearch(){
