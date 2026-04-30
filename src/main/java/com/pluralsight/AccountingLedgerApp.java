@@ -424,9 +424,78 @@ public class AccountingLedgerApp {
     }
 
     private static void monthToDate() {
+        boolean found = false;
+        double total = 0;
 
+        System.out.println("""
+            
+            ====================================================
+                       🥷 MONTH TO DATE
+            ====================================================
+            """);
+
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
+        int today = LocalDate.now().getDayOfMonth();
+
+        TransactionFileManager.readFile();
+
+        for (Transaction t : TransactionFileManager.transactions) {
+
+            String[] parts = t.getDate().split("-");
+
+            int year = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+            int day = Integer.parseInt(parts[2]);
+
+            if (year == currentYear && month == currentMonth && day <= today) {
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found for month to date.");
+        }
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Month To Date Total as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+
+        pause();
     }
     private static void previousMonth(){
+        boolean found=false;
+        double total=0;
+        System.out.println("""
+            
+            ====================================================
+                        🥷 Previous Month
+            ====================================================
+            """);
+
+        int month= LocalDate.now().getMonthValue();
+        int previousMonth=month-1;
+
+        TransactionFileManager.readFile();
+        for (Transaction t:TransactionFileManager.transactions) {
+            int transactionYear=Integer.parseInt(t.getDate().substring(5,7));
+
+            if (transactionYear==previousMonth) {
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        }
+        if(!found){
+            System.out.println("No Month found.");
+        }
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
+        System.out.println("====================================================");
+        pause();
 
     }
     private static void yearToDate(){
@@ -456,7 +525,7 @@ public class AccountingLedgerApp {
             }
         }
         if(!found){
-            System.out.println("No Vabdor found.");
+            System.out.println("No Year found.");
         }
 
         System.out.println("---------------------------------------------------");
