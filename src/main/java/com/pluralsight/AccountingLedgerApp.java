@@ -112,7 +112,7 @@ public class AccountingLedgerApp {
             System.out.print("Year (YYYY): ");
             if (input.hasNextInt()) {
                 year = input.nextInt();
-                if (year < 1900 || year >= 2026) {
+                if (year < 1900 || year > 2026) {
                     System.out.println("Invalid year. Try again.");
                     continue;
                 }

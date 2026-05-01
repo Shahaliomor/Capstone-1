@@ -18,25 +18,51 @@ public class TransactionFileManager {
         });
     }
     // Read all transactions from CSV file and store in ArrayList
-    public static void readFile(){
+    public static void readFile() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
+
             transactions.clear();
             String line;
-            while ((line=reader.readLine())!=null) {
-                String[] parts=line.split("\\|");
-                String date=parts[0];
-                String time=parts[1];
-                String description=parts[2];
-                String vandor=parts[3];
-                double amount=Double.parseDouble(parts[4]);
-                Transaction trans=new Transaction(date,time,description,vandor,amount);
+
+            while ((line = reader.readLine()) != null) {
+
+                // Skip empty lines
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] parts = line.split("\\|");
+
+                // Skip invalid lines that do not have 5 parts
+                if (parts.length != 5) {
+                    System.out.println("⚠ Skipping invalid line: " + line);
+                    continue;
+                }
+
+                String date = parts[0];
+                String time = parts[1];
+                String description = parts[2];
+                String vendor = parts[3];
+
+                double amount;
+
+                try {
+                    amount = Double.parseDouble(parts[4]);
+                } catch (NumberFormatException e) {
+                    System.out.println("⚠ Skipping invalid amount line: " + line);
+                    continue;
+                }
+
+                Transaction trans = new Transaction(date, time, description, vendor, amount);
                 transactions.add(trans);
             }
+
             reader.close();
+
         } catch (FileNotFoundException e) {
             System.out.print("Error: file not found");
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.print("Error: IO Exception");
         }
     }
