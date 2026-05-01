@@ -6,51 +6,93 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
-    static Scanner input= new Scanner(System.in);
+    private static final String username="omor";
+    private static final String password="1234";
+    static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Welcome to the Accounting Ledger App!");
-        homeScreen();
+        // Main method: starts the application by showing login screen
+        loginScreen();
     }
+    // Login screen with 3 attempts for username and password validation
+    private static void loginScreen() {
+        System.out.println();
+        System.out.println("""
+                
+                  🥷Welcome to the EXPENSE NINJA 🥷
+                Track. Control. Master your expenses.
+                
+                Enter your credentials to begin:
+                """);
 
-    private static void pause(){
+        int attempt = 3;
+        //Username and Password with 3 attempt
+        while (attempt != 0) {
+            System.out.print("Username: ");
+            String user = input.nextLine();
+            System.out.print("Password: ");
+            String pass = input.nextLine();
+
+            if (username.equalsIgnoreCase(user) && password.equals(pass)) {
+                System.out.println();
+                System.out.println();
+                homeScreen();
+                return;
+            } else {
+                System.out.println();
+                System.out.println("🥷🔒 Access denied! Incorrect username or password.");
+                System.out.println((attempt - 1) + " attempts remaining.");
+                System.out.println();
+                attempt--;
+            }
+            if (attempt == 0) {
+                System.out.println();
+                System.out.println("🥷🛑 Too many failed attempts! System locked. Try again later.");
+            }
+
+        }
+
+
+    }
+    // Pause method: waits for user to press Enter before continuing
+    private static void pause() {
         System.out.println("\n🥷 Press Enter to continue...");
         input.nextLine(); // clear leftover
 
     }
+    // Home screen: main menu for user navigation
+    private static void homeScreen() {
 
-    private static void homeScreen(){
-
-        while (true){
+        while (true) {
             System.out.println("""
-            ====================================
-                    EXPENSE NINJA 🥷
-            ====================================
-            Track. Control. Master your money.
-            ------------------------------------
-            D) Add Deposit
-            P) Make Payment
-            L) Ledger
-            X) Exit
-            ====================================
-            """);
+                    ====================================
+                            EXPENSE NINJA 🥷
+                    ====================================
+                    Track. Control. Master your money.
+                    ------------------------------------
+                    D) Add Deposit
+                    P) Make Payment
+                    L) Ledger
+                    X) Exit
+                    ====================================
+                    """);
             System.out.print("Choose an option: ");
-            String choose=input.nextLine().trim();
-            if(choose.equalsIgnoreCase("d")){
+            String choose = input.nextLine().trim();
+            //Choose from home screen
+            if (choose.equalsIgnoreCase("d")) {
                 addDeposit();
             } else if (choose.equalsIgnoreCase("p")) {
                 makePayment();
-            }else if (choose.equalsIgnoreCase("l")) {
+            } else if (choose.equalsIgnoreCase("l")) {
                 ledger();
-            }else if (choose.equalsIgnoreCase("x")) {
+            } else if (choose.equalsIgnoreCase("x")) {
                 System.out.println("""
-                Thank you for using the EXPENSE NINJA App 🥷. 
-                Your transactions have been recorded successfully 🥷. 
-                Have a great day 🥷!
-                """);
+                        Thank you for using the EXPENSE NINJA App 🥷. 
+                        Your transactions have been recorded successfully 🥷. 
+                        Have a great day 🥷!
+                        """);
                 return;
-            }
-            else {
+            } else {
                 System.out.println();
                 System.out.println("❌ Invalid choice. Please enter D, P, L, or X.");
 
@@ -59,18 +101,18 @@ public class AccountingLedgerApp {
         }
 
     }
-
+    // Method to get valid date input from user
     private static String getDate() {
         int year;
         int month;
         int day;
-
+        // Validate year, month, and day inputs to avoid invalid dates
         while (true) {
 
             System.out.print("Year (YYYY): ");
             if (input.hasNextInt()) {
                 year = input.nextInt();
-                if (year < 1900 || year > 2026) {
+                if (year < 1900 || year >= 2026) {
                     System.out.println("Invalid year. Try again.");
                     continue;
                 }
@@ -112,11 +154,12 @@ public class AccountingLedgerApp {
 
         return String.format("%04d-%02d-%02d", year, month, day);
     }
+    // Method to get valid time input
     private static String getTime() {
         int hour;
         int minute;
         int second;
-
+        // Ensure hour, minute, and second are within valid ranges
         while (true) {
 
             System.out.print("Hour (0-23): ");
@@ -146,8 +189,8 @@ public class AccountingLedgerApp {
 
         return String.format("%02d:%02d:%02d", hour, minute, second);
     }
-
-    private static String currentDateAndTime(){
+    // Returns current system date and time in formatted string
+    private static String currentDateAndTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss");
 
         String dateTime = LocalDateTime.now().format(formatter);
@@ -155,20 +198,21 @@ public class AccountingLedgerApp {
         return dateTime;
 
     }
-
+    // Generic method to get trimmed string input from user
     private static String getInput(String message) {
         System.out.print(message);
         String value = input.nextLine().trim();
         System.out.println();
         return value;
     }
-    private static void addDeposit(){
+    // Method to add a deposit transaction (positive amount)
+    private static void addDeposit() {
 
         System.out.println("""
-        ------------------------------------
-                  🥷 ADD DEPOSIT
-        ------------------------------------
-        """);
+                ------------------------------------
+                          🥷 ADD DEPOSIT
+                ------------------------------------
+                """);
 
         String date = getDate();
         String time = getTime();
@@ -181,7 +225,7 @@ public class AccountingLedgerApp {
         while (true) {
             System.out.println();
             System.out.print("Amount: $");
-
+            // Validate amount input using hasNextDouble to prevent crash
             if (input.hasNextDouble()) {
                 amount = input.nextDouble();
                 input.nextLine();
@@ -197,21 +241,22 @@ public class AccountingLedgerApp {
                 input.nextLine(); // clear bad input
             }
         }
-
-        Transaction trans= new Transaction(date,time,description,vendor,amount);
+        // Create transaction object and save to file
+        Transaction trans = new Transaction(date, time, description, vendor, amount);
         TransactionFileManager.writefile(trans.toCSV());
 
         System.out.println("✅ Deposit saved successfully!");
         pause();
 
     }
-    private static void makePayment(){
+    // Method to add a payment transaction
+    private static void makePayment() {
 
         System.out.println("""
-    ------------------------------------
-               🥷 MAKE PAYMENT
-    ------------------------------------
-    """);
+                ------------------------------------
+                           🥷 MAKE PAYMENT
+                ------------------------------------
+                """);
 
         String date = getDate();
         String time = getTime();
@@ -232,8 +277,8 @@ public class AccountingLedgerApp {
                     System.out.println("❌ Amount cannot be zero.");
                     continue;
                 }
-
-                amount = -Math.abs(amount); // 🔥 always negative
+                // Convert amount to negative to represent payment
+                amount = -Math.abs(amount);
                 break;
 
             } else {
@@ -252,7 +297,7 @@ public class AccountingLedgerApp {
         System.out.println("✅ Payment saved successfully!\n");
         pause();
     }
-
+    // Ledger menu: displays transaction options and reports
     private static void ledger() {
 
         System.out.println();
@@ -261,43 +306,41 @@ public class AccountingLedgerApp {
         while (true) {
 
             System.out.println("""
-                
-                ====================================
-                            🥷 LEDGER 
-                ====================================
-                A) All - Display all entries
-                D) Deposits - Display only the entries that are deposits into the account
-                P) Payments - Display payment
-                R) Reports
-                H) Home - go back to the home page
-                ====================================
-                """);
+                    
+                    ====================================
+                                🥷 LEDGER 
+                    ====================================
+                    A) All - Display all entries
+                    D) Deposits - Display only the entries that are deposits into the account
+                    P) Payments - Display payment
+                    R) Reports
+                    H) Home - go back to the home page
+                    ====================================
+                    """);
 
             System.out.print("choose: ");
-            String choose=input.nextLine().trim();
-            if(choose.equalsIgnoreCase("a")){
+            String choose = input.nextLine().trim();
+            if (choose.equalsIgnoreCase("a")) {
                 displayAll();
             } else if (choose.equalsIgnoreCase("d")) {
                 displayDeposits();
-            }else if (choose.equalsIgnoreCase("p")) {
+            } else if (choose.equalsIgnoreCase("p")) {
                 displayPayments();
-            }else if (choose.equalsIgnoreCase("r")) {
+            } else if (choose.equalsIgnoreCase("r")) {
                 reports();
-            }
-            else if (choose.equalsIgnoreCase("h")) {
+            } else if (choose.equalsIgnoreCase("h")) {
                 System.out.println("Going back to main screen");
                 System.out.println();
                 System.out.println();
                 return;
-            }
-            else {
+            } else {
                 System.out.println();
                 System.out.println("❌ Invalid choice. Please enter A, D, P, R or H.");
             }
         }
     }
-
-    private static void displayAll(){
+    // Display all transactions sorted by date (latest first)
+    private static void displayAll() {
 
 
         System.out.println("""
@@ -316,28 +359,29 @@ public class AccountingLedgerApp {
         pause();
 
     }
-    private static void displayDeposits(){
+    // Display only deposit transactions
+    private static void displayDeposits() {
         System.out.println("""
-            
-            ====================================================
-                        🥷 DEPOSITS (Income Only)
-            ====================================================
-            """);
+                
+                ====================================================
+                            🥷 DEPOSITS (Income Only)
+                ====================================================
+                """);
 
         TransactionFileManager.readFile();
 
         boolean found = false;
         double total = 0;
 
-        for (Transaction t : TransactionFileManager.transactions){
-            if (t.getAmount() > 0){
+        for (Transaction t : TransactionFileManager.transactions) {
+            if (t.getAmount() > 0) {
                 System.out.println(t.toCSV());
                 total += t.getAmount();
                 found = true;
             }
         } //  loop ends here
 
-        if (!found){
+        if (!found) {
             System.out.println("No deposits found.");
         }
 
@@ -347,28 +391,29 @@ public class AccountingLedgerApp {
 
         pause();
     }
-    private static void displayPayments(){
+    // Display only payment transactions
+    private static void displayPayments() {
         System.out.println("""
-            
-            ====================================================
-                        🥷 Payment (Payments Only)
-            ====================================================
-            """);
+                
+                ====================================================
+                            🥷 Payment (Payments Only)
+                ====================================================
+                """);
 
         TransactionFileManager.readFile();
 
         boolean found = false;
         double total = 0;
 
-        for (Transaction t : TransactionFileManager.transactions){
-            if (t.getAmount() < 0){
+        for (Transaction t : TransactionFileManager.transactions) {
+            if (t.getAmount() < 0) {
                 System.out.println(t.toCSV());
                 total += t.getAmount();
                 found = true;
             }
         } // ✅ loop ends here
 
-        if (!found){
+        if (!found) {
             System.out.println("No Payment found.");
         }
 
@@ -379,40 +424,41 @@ public class AccountingLedgerApp {
         pause();
 
     }
-    private static void reports(){
+    // Reports menu: provides different financial reports
+    private static void reports() {
 
-        while (true){
+        while (true) {
             System.out.println();
             System.out.println();
             System.out.println("""
-                
-                ====================================
-                          🥷 REPORTS
-                ====================================
-                1) Month To Date
-                2) Previous Month
-                3) Year To Date
-                4) Previous Year
-                5) Search by Vendor
-                6) Custom Search
-                0) Back
-                ====================================
-                """);
+                    
+                    ====================================
+                              🥷 REPORTS
+                    ====================================
+                    1) Month To Date
+                    2) Previous Month
+                    3) Year To Date
+                    4) Previous Year
+                    5) Search by Vendor
+                    6) Custom Search
+                    0) Back
+                    ====================================
+                    """);
 
             System.out.print("Choose: ");
             String choice = input.nextLine().trim();
 
-            if(choice.equals("1")){
+            if (choice.equals("1")) {
                 monthToDate();
-            } else if(choice.equals("2")){
+            } else if (choice.equals("2")) {
                 previousMonth();
-            } else if(choice.equals("3")){
+            } else if (choice.equals("3")) {
                 yearToDate();
-            } else if(choice.equals("4")){
+            } else if (choice.equals("4")) {
                 previousYear();
-            } else if(choice.equals("5")){
+            } else if (choice.equals("5")) {
                 searchByVendor();
-            } else if(choice.equals("0")){
+            } else if (choice.equals("0")) {
                 return; // goes back to Ledger screen
             } else if (choice.equals("6")) {
                 customSearch();
@@ -422,17 +468,17 @@ public class AccountingLedgerApp {
             }
         }
     }
-
+    // Show transactions from current month up to today
     private static void monthToDate() {
         boolean found = false;
         double total = 0;
 
         System.out.println("""
-            
-            ====================================================
-                       🥷 MONTH TO DATE
-            ====================================================
-            """);
+                
+                ====================================================
+                           🥷 MONTH TO DATE
+                ====================================================
+                """);
 
         int currentYear = LocalDate.now().getYear();
         int currentMonth = LocalDate.now().getMonthValue();
@@ -465,34 +511,34 @@ public class AccountingLedgerApp {
 
         pause();
     }
-    private static void previousMonth(){
-        boolean found=false;
-        double total=0;
+    // Show transactions from previous month
+    private static void previousMonth() {
+        boolean found = false;
+        double total = 0;
         System.out.println("""
-            
-            ====================================================
-                        🥷 Previous Month
-            ====================================================
-            """);
+                
+                ====================================================
+                            🥷 Previous Month
+                ====================================================
+                """);
 
-        int month= LocalDate.now().getMonthValue();
-        int previousMonth=month-1;
-        if(previousMonth==0)
-        {
-            previousMonth=12;
+        int month = LocalDate.now().getMonthValue();
+        int previousMonth = month - 1;
+        if (previousMonth == 0) {
+            previousMonth = 12;
         }
 
         TransactionFileManager.readFile();
-        for (Transaction t:TransactionFileManager.transactions) {
-            int transactionYear=Integer.parseInt(t.getDate().substring(5,7));
+        for (Transaction t : TransactionFileManager.transactions) {
+            int transactionMonth = Integer.parseInt(t.getDate().substring(5, 7));
 
-            if (transactionYear==previousMonth) {
+            if (transactionMonth == previousMonth) {
                 System.out.println(t.toCSV());
                 total += t.getAmount();
                 found = true;
             }
         }
-        if(!found){
+        if (!found) {
             System.out.println("No Month found.");
         }
 
@@ -502,16 +548,17 @@ public class AccountingLedgerApp {
         pause();
 
     }
-    private static void yearToDate(){
+    // Show transactions from current year
+    private static void yearToDate() {
         boolean found = false;
         double total = 0;
 
         System.out.println("""
-        
-        ====================================================
-                    🥷 YEAR TO DATE
-        ====================================================
-        """);
+                
+                ====================================================
+                            🥷 YEAR TO DATE
+                ====================================================
+                """);
 
         int currentYear = LocalDate.now().getYear();
 
@@ -541,30 +588,31 @@ public class AccountingLedgerApp {
         pause();
 
     }
-    private static void previousYear(){
-        boolean found=false;
-        double total=0;
+    // Show transactions from previous year
+    private static void previousYear() {
+        boolean found = false;
+        double total = 0;
         System.out.println("""
-            
-            ====================================================
-                        🥷 Previous Year
-            ====================================================
-            """);
+                
+                ====================================================
+                            🥷 Previous Year
+                ====================================================
+                """);
 
-        int year= LocalDate.now().getYear();
-        int previousYear=year-1;
+        int year = LocalDate.now().getYear();
+        int previousYear = year - 1;
 
         TransactionFileManager.readFile();
-        for (Transaction t:TransactionFileManager.transactions) {
-            int transactionYear=Integer.parseInt(t.getDate().substring(0,4));
+        for (Transaction t : TransactionFileManager.transactions) {
+            int transactionYear = Integer.parseInt(t.getDate().substring(0, 4));
 
-            if (transactionYear==previousYear) {
+            if (transactionYear == previousYear) {
                 System.out.println(t.toCSV());
                 total += t.getAmount();
                 found = true;
             }
         }
-        if(!found){
+        if (!found) {
             System.out.println("No Year found.");
         }
 
@@ -572,41 +620,39 @@ public class AccountingLedgerApp {
         System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
         System.out.println("====================================================");
         pause();
-
     }
-    private static void searchByVendor(){
+    // Search transactions by vendor name
+    private static void searchByVendor() {
 
-        boolean found=false;
-        double total=0;
+        boolean found = false;
+        double total = 0;
         System.out.println("""
-            
-            ====================================================
-                        🥷 Search By Vendor
-            ====================================================
-            """);
-
-
+                
+                ====================================================
+                            🥷 Search By Vendor
+                ====================================================
+                """);
         TransactionFileManager.readFile();
-        System.out.print("which vandor are you searching: ");
-        String vandorName=input.nextLine();
-        for (Transaction t:TransactionFileManager.transactions) {
-            if (t.getVendor().equalsIgnoreCase(vandorName)) {
+        System.out.print("which vendor are you searching: ");
+        String vendorName = input.nextLine();
+        for (Transaction t : TransactionFileManager.transactions) {
+            if (t.getVendor().equalsIgnoreCase(vendorName)) {
                 System.out.println(t.toCSV());
                 total += t.getAmount();
                 found = true;
             }
         }
-            if(!found){
-                System.out.println("No Vabdor found.");
-            }
+        if (!found) {
+            System.out.println("No vendor found.");
+        }
 
         System.out.println("---------------------------------------------------");
         System.out.printf("🥷 Total Payments as of %s : $%.2f%n", currentDateAndTime(), total);
         System.out.println("====================================================");
         pause();
-
     }
-    private static void customSearch(){
+    // Custom search with filters: date range, description, vendor, amount
+    private static void customSearch() {
 
         System.out.print("Start Date (YYYY-MM-DD): ");
         String start = input.nextLine();
@@ -628,7 +674,7 @@ public class AccountingLedgerApp {
         double total = 0;
         boolean found = false;
 
-        for (Transaction t : TransactionFileManager.transactions){
+        for (Transaction t : TransactionFileManager.transactions) {
 
             boolean match = true;
 
@@ -638,19 +684,28 @@ public class AccountingLedgerApp {
             if (!desc.isEmpty() && !t.getDescription().toLowerCase().contains(desc)) match = false;
             if (!vendor.isEmpty() && !t.getVendor().toLowerCase().contains(vendor)) match = false;
 
-            if (!amountInput.isEmpty()){
-                double amount = Double.parseDouble(amountInput);
-                if (t.getAmount() != amount) match = false;
+            if (!amountInput.isEmpty()) {
+                try {
+                    double amount = Double.parseDouble(amountInput);
+
+                    if (t.getAmount() != amount) {
+                        match = false;
+                    }
+
+                } catch (Exception e) {
+                    System.out.println("Invalid amount input.");
+                    match = false; // 🔥 important: stop matching if input is bad
+                }
             }
 
-            if (match){
+            if (match) {
                 System.out.println(t.toCSV());
                 total += t.getAmount();
                 found = true;
             }
         }
 
-        if (!found){
+        if (!found) {
             System.out.println("No results found.");
         }
 
@@ -659,12 +714,8 @@ public class AccountingLedgerApp {
                 currentDateAndTime(),
                 total);
         System.out.println("====================================================");
-
         pause();
     }
-
-
-
 }
 
 
