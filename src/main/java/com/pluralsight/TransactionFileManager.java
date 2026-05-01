@@ -9,7 +9,13 @@ public class TransactionFileManager {
 
     private static final String FILE_PATH="src/main/resources/transactions.csv";
 
-
+    public static void sortTransactions(){
+        transactions.sort((t1, t2) -> {
+            String dt1 = t1.getDate() + " " + t1.getTime();
+            String dt2 = t2.getDate() + " " + t2.getTime();
+            return dt2.compareTo(dt1);
+        });
+    }
     public static void readFile(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));

@@ -70,7 +70,7 @@ public class AccountingLedgerApp {
             System.out.print("Year (YYYY): ");
             if (input.hasNextInt()) {
                 year = input.nextInt();
-                if (year < 1900 || year > 2100) {
+                if (year < 1900 || year > 2026) {
                     System.out.println("Invalid year. Try again.");
                     continue;
                 }
@@ -477,6 +477,10 @@ public class AccountingLedgerApp {
 
         int month= LocalDate.now().getMonthValue();
         int previousMonth=month-1;
+        if(previousMonth==0)
+        {
+            previousMonth=12;
+        }
 
         TransactionFileManager.readFile();
         for (Transaction t:TransactionFileManager.transactions) {
@@ -604,7 +608,62 @@ public class AccountingLedgerApp {
     }
     private static void customSearch(){
 
+        System.out.print("Start Date (YYYY-MM-DD): ");
+        String start = input.nextLine();
+
+        System.out.print("End Date (YYYY-MM-DD): ");
+        String end = input.nextLine();
+
+        System.out.print("Description: ");
+        String desc = input.nextLine().toLowerCase();
+
+        System.out.print("Vendor: ");
+        String vendor = input.nextLine().toLowerCase();
+
+        System.out.print("Amount: ");
+        String amountInput = input.nextLine();
+
+        TransactionFileManager.readFile();
+        TransactionFileManager.sortTransactions();
+        double total = 0;
+        boolean found = false;
+
+        for (Transaction t : TransactionFileManager.transactions){
+
+            boolean match = true;
+
+            if (!start.isEmpty() && t.getDate().compareTo(start) < 0) match = false;
+            if (!end.isEmpty() && t.getDate().compareTo(end) > 0) match = false;
+
+            if (!desc.isEmpty() && !t.getDescription().toLowerCase().contains(desc)) match = false;
+            if (!vendor.isEmpty() && !t.getVendor().toLowerCase().contains(vendor)) match = false;
+
+            if (!amountInput.isEmpty()){
+                double amount = Double.parseDouble(amountInput);
+                if (t.getAmount() != amount) match = false;
+            }
+
+            if (match){
+                System.out.println(t.toCSV());
+                total += t.getAmount();
+                found = true;
+            }
+        }
+
+        if (!found){
+            System.out.println("No results found.");
+        }
+
+        System.out.println("---------------------------------------------------");
+        System.out.printf("🥷 Total as of %s : $%.2f%n",
+                currentDateAndTime(),
+                total);
+        System.out.println("====================================================");
+
+        pause();
     }
+
+
 
 }
 
