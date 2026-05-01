@@ -73,7 +73,6 @@ public class TransactionFileManager {
             System.out.println("No transactions found.");
             return;
         }
-
         // Sort transactions before displaying
         sortTransactions();
         total=0;
